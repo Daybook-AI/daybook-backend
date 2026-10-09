@@ -1,0 +1,4 @@
+export const HASH_UTILITY = Symbol('HASH_UTILITY');
+export const ACCESS_TOKEN_UTILITY = Symbol('ACCESS_TOKEN_UTILITY');
+export const REFRESH_TOKEN_UTILITY = Symbol('REFRESH_TOKEN_UTILITY');
+export const RESEND_UTILITY = Symbol('RESEND_UTILITY');
