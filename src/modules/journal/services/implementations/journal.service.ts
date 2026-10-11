@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IResponse } from 'src/core/common/interface';
 import { SuccessMessagesEnum } from 'src/core/enums/success.enum';
-import { ICreateJournalData, IJournalClientResponse, IJournalDocument } from 'src/core/interfaces/journal.interface';
+import { ICreateJournalData, IJournalClientResponse, IJournalDocument, IJournalFilters } from 'src/core/interfaces/journal.interface';
 import { IJournalRepository } from 'src/core/repositories/interface/journal-repo.interface';
 import { JOURNAL_REPOSITORY } from 'src/core/tokens/repository.token';
-import { CreateJournalDto } from 'src/modules/journal/dtos/journal.dto';
+import { CreateJournalDto, JournalQueryDto } from 'src/modules/journal/dtos/journal.dto';
 import { IJournalService } from 'src/modules/journal/services/interfaces/journal-service.interface';
 
 @Injectable()
@@ -14,7 +14,10 @@ export class JournalService implements IJournalService {
         private readonly _journalRepository: IJournalRepository,
     ) { }
 
-    async createJournalEntry(userId: number, journalPayload: CreateJournalDto): Promise<IResponse<IJournalClientResponse>> {
+    async createJournalEntry(
+        userId: number,
+        journalPayload: CreateJournalDto):
+        Promise<IResponse<IJournalClientResponse>> {
 
         const journalData: ICreateJournalData = {
             userId,
@@ -41,20 +44,45 @@ export class JournalService implements IJournalService {
         }
     }
 
-    async getAllJournalEntries(userId: number): Promise<IResponse<IJournalClientResponse[]>> {
-        const journals = await this._journalRepository.findAllByUserId(userId);
+    async getAllJournalEntries(
+        userId: number,
+        journalFilters?: JournalQueryDto,
+    ): Promise<IResponse<IJournalClientResponse[]>> {
+
+        const filters: IJournalFilters = {
+            page: journalFilters?.page ?? 1,
+            limit: journalFilters?.limit ?? 20,
+            search: journalFilters?.search || undefined,
+            mood:
+                journalFilters?.mood && journalFilters.mood !== 'All'
+                    ? journalFilters.mood
+                    : undefined,
+            tag:
+                journalFilters?.tag && journalFilters.tag !== 'All'
+                    ? journalFilters.tag
+                    : undefined,
+            from: journalFilters?.from || undefined,
+            to: journalFilters?.to || undefined,
+            sort: journalFilters?.sort ?? 'desc',
+        };
+
+        const journals = await this._journalRepository.findAllByUserId(
+            userId,
+            filters,
+        );
+
         return {
             status: 'success',
-            message: SuccessMessagesEnum.JournalCreationSuccess,
-            data: journals.map(journal => ({
+            message: SuccessMessagesEnum.JournalFetchSuccess,
+            data: journals.map((journal) => ({
                 id: journal.id,
                 content: journal.content,
                 title: journal.title,
                 mood: journal.mood,
                 tags: journal.tags,
                 createdAt: journal.createdAt,
-                updatedAt: journal.updatedAt
-            }))
+                updatedAt: journal.updatedAt,
+            })),
         };
     }
 }

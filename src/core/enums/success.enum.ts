@@ -9,5 +9,8 @@ export enum SuccessMessagesEnum {
 
     FetchUserSuccess = 'User retrieved successfully',
 
-    JournalCreationSuccess = 'Journal created.',
+    JournalCreationSuccess = 'Journal entry created successfully',
+    JournalFetchSuccess = 'Journal entries fetched successfully',
+    JournalUpdateSuccess = 'Journal entry updated successfully',
+    JournalDeleteSuccess = 'Journal entry deleted successfully',
 }

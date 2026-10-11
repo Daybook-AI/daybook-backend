@@ -43,10 +43,16 @@ export interface IJournalClientResponse {
     updatedAt: Date;
 }
 
-// export type JsonValue =
-//     | string
-//     | number
-//     | boolean
-//     | null
-//     | JsonValue[]
-//     | { [key: string]: JsonValue };
+export interface IJournalFilters {
+    page?: number;
+    limit?: number;
+
+    search?: string;
+    mood?: string;
+    tag?: string;
+
+    from?: string;
+    to?: string;
+
+    sort?: 'asc' | 'desc';
+}
