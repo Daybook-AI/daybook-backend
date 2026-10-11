@@ -8,4 +8,6 @@ export enum SuccessMessagesEnum {
     NewAccessToken = 'New Access token created',
 
     FetchUserSuccess = 'User retrieved successfully',
+
+    JournalCreationSuccess = 'Journal created.',
 }

@@ -11,7 +11,7 @@ import type { IClientUserResponse } from 'src/core/interfaces/user.interface';
 import type { IHashUtility } from 'src/core/utility/interface/hash-utility.interface';
 import type { IAuthService } from 'src/modules/auth/services/interface/auth-service.interface';
 import type { IResponse } from 'src/core/common/interface';
-import type { IUserRepository } from 'src/core/repositories/interface/user-repository.interface';
+import type { IUserRepository } from 'src/core/repositories/interface/user-repo.interface';
 import type { IAccessTokenUtility, IRefreshTokenUtility } from 'src/core/utility/interface/jwt-utility.interface';
 import type { IEmailService } from 'src/infra/interface/email-service.interface';
 import type { IOtpService } from 'src/infra/interface/otp-service.interface';
