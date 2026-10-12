@@ -6,11 +6,22 @@ import { PrismaModule } from 'src/core/config/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { RedisModule } from 'src/core/config/redis/redis.module';
 import { JournalModule } from 'src/modules/journal/journal.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60_000,
+          limit: 100
+        }
+      ]
     }),
 
     PrismaModule,
@@ -21,6 +32,12 @@ import { JournalModule } from 'src/modules/journal/journal.module';
     JournalModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    },
+    AppService
+  ],
 })
 export class AppModule { }

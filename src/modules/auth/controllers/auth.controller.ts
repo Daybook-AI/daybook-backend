@@ -12,6 +12,7 @@ import type { IClientUserResponse } from 'src/core/interfaces/user.interface';
 import { SuccessMessagesEnum } from 'src/core/enums/success.enum';
 import { ErrorMessagesEnum } from 'src/core/enums/errors.enum';
 import { AppConstants } from 'src/core/common/constants';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -50,7 +51,10 @@ export class AuthController {
 
     @Public()
     @Post('register')
-    async createAccount(@Body() registerPayload: RegisterPayloadDto, @Res({ passthrough: true }) res: Response): Promise<IResponse<IClientUserResponse>> {
+    async createAccount(
+        @Body() registerPayload: RegisterPayloadDto,
+        @Res({ passthrough: true }) res: Response):
+        Promise<IResponse<IClientUserResponse>> {
         const response = await this._authService.registerAccount(registerPayload);
 
         const user = response?.data;
@@ -68,6 +72,7 @@ export class AuthController {
 
     @Public()
     @Post('send-otp')
+    @Throttle({ default: { limit: 3, ttl: 10 * 60 * 1000 } })
     async sendOtp(@Body() { email }: EmailDto): Promise<IResponse> {
         return await this._authService.sendOtp(email);
     }
@@ -80,7 +85,11 @@ export class AuthController {
 
     @Public()
     @Post('login')
-    async userLogin(@Body() loginPayload: LoginPayloadDto, @Res({ passthrough: true }) res: Response): Promise<IResponse<IClientUserResponse>> {
+    @Throttle({ default: { limit: 5, ttl: 15 * 60 * 1000 } })
+    async userLogin(
+        @Body() loginPayload: LoginPayloadDto,
+        @Res({ passthrough: true }) res: Response):
+        Promise<IResponse<IClientUserResponse>> {
         const response = await this._authService.validateLoginPayload(loginPayload);
 
         const user = response?.data;
