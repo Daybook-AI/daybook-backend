@@ -15,5 +15,8 @@ export enum ErrorMessagesEnum {
 
     RefreshTokenMissing = 'Refresh token is missing',
     InvalidRefreshToken = 'Invalid refresh token payload',
-    ExpiredRefreshtoken = 'Invalid or expired refresh token'
+    ExpiredRefreshtoken = 'Invalid or expired refresh token',
+
+    JournalIdRequired = 'Journal ID is required',
+    FailedDbOp = 'Failed to get the requested item.',
 }

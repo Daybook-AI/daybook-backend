@@ -1,1 +1,2 @@
 export const USER_REPOSITORY = Symbol('USER_REPOSITORY');
+export const JOURNAL_REPOSITORY = Symbol('JOURNAL_REPOSITORY');
