@@ -1,8 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { Journal, Prisma } from "generated/prisma/client";
 import { PrismaService } from "src/core/config/prisma/prisma.service";
+import { ErrorMessagesEnum } from "src/core/enums/errors.enum";
 import { ICreateJournalData, IJournalFilters } from "src/core/interfaces/journal.interface";
 import { IJournalRepository } from "src/core/repositories/interface/journal-repo.interface";
+import { JournalDocumentDto } from "src/modules/journal/dtos/journal.dto";
 
 @Injectable()
 export class JournalRepository implements IJournalRepository {
@@ -88,6 +90,50 @@ export class JournalRepository implements IJournalRepository {
 
             skip,
             take: limit,
+        });
+    }
+
+    async findOneByJournalId(journalId: number, userId: number): Promise<Journal | null> {
+        return this._prisma.journal.findFirst({
+            where: {
+                userId,
+                id: journalId,
+                isDeleted: false,
+            }
+        });
+    }
+
+    async updateOneByJournalId(journalId: number, data: Prisma.JournalUpdateManyMutationInput,): Promise<Journal | null> {
+        const result = await this._prisma.journal.updateMany({
+            where: {
+                id: journalId,
+            },
+            data,
+        });
+
+        if (result.count === 0) {
+            throw new Error(ErrorMessagesEnum.FailedDbOp);
+        }
+
+        return await this._prisma.journal.findUnique({
+            where: {
+                id: journalId,
+            },
+        });
+    }
+
+    toPrismaJson(value: JournalDocumentDto): Prisma.InputJsonValue {
+        return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+    }
+
+    deleteOneByJournalId(journalId: number): Promise<Journal> {
+        return this._prisma.journal.update({
+            where: {
+                id: journalId
+            },
+            data: {
+                isDeleted: true
+            }
         });
     }
 }

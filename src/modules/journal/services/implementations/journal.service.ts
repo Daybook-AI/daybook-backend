@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IResponse } from 'src/core/common/interface';
+import { ErrorMessagesEnum } from 'src/core/enums/errors.enum';
 import { SuccessMessagesEnum } from 'src/core/enums/success.enum';
 import { ICreateJournalData, IJournalClientResponse, IJournalDocument, IJournalFilters } from 'src/core/interfaces/journal.interface';
 import { IJournalRepository } from 'src/core/repositories/interface/journal-repo.interface';
 import { JOURNAL_REPOSITORY } from 'src/core/tokens/repository.token';
-import { CreateJournalDto, JournalQueryDto } from 'src/modules/journal/dtos/journal.dto';
+import { JournalPayloadDto, JournalQueryDto } from 'src/modules/journal/dtos/journal.dto';
 import { IJournalService } from 'src/modules/journal/services/interfaces/journal-service.interface';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class JournalService implements IJournalService {
 
     async createJournalEntry(
         userId: number,
-        journalPayload: CreateJournalDto):
+        journalPayload: JournalPayloadDto):
         Promise<IResponse<IJournalClientResponse>> {
 
         const journalData: ICreateJournalData = {
@@ -83,6 +84,82 @@ export class JournalService implements IJournalService {
                 createdAt: journal.createdAt,
                 updatedAt: journal.updatedAt,
             })),
+        };
+    }
+
+    async getJournalById(userId: number, journalId: string): Promise<IResponse<IJournalClientResponse>> {
+        if (!journalId) throw new BadRequestException(ErrorMessagesEnum.JournalIdRequired);
+        const journal = await this._journalRepository.findOneByJournalId(Number(journalId), userId);
+
+        if (!journal) throw new BadRequestException(ErrorMessagesEnum.FailedDbOp);
+
+        return {
+            status: 'success',
+            message: SuccessMessagesEnum.JournalFetchSuccess,
+            data: {
+                id: journal.id,
+                content: journal.content,
+                title: journal.title,
+                mood: journal.mood,
+                tags: journal.tags,
+                createdAt: journal.createdAt,
+                updatedAt: journal.updatedAt
+            }
+        }
+    }
+
+    async updateJournalEntry(journalId: string, journalPayload: JournalPayloadDto): Promise<IResponse<IJournalClientResponse>> {
+        if (!journalId) {
+            throw new BadRequestException(
+                ErrorMessagesEnum.JournalIdRequired,
+            );
+        }
+
+        const id = Number(journalId);
+
+        if (!Number.isInteger(id) || id <= 0) {
+            throw new BadRequestException('Invalid journal ID');
+        }
+
+        const journal = await this._journalRepository.updateOneByJournalId(id, {
+            ...journalPayload,
+            content: this._journalRepository.toPrismaJson(journalPayload.content),
+        });
+
+        if (!journal) {
+            throw new NotFoundException(ErrorMessagesEnum.FailedDbOp);
+        }
+
+        return {
+            status: 'success',
+            message: SuccessMessagesEnum.JournalUpdateSuccess,
+            data: journal,
+        };
+    }
+
+    async removeJournalEntry(journalId: string): Promise<IResponse<string>> {
+        if (!journalId) {
+            throw new BadRequestException(
+                ErrorMessagesEnum.JournalIdRequired,
+            );
+        }
+
+        const id = Number(journalId);
+
+        if (!Number.isInteger(id) || id <= 0) {
+            throw new BadRequestException('Invalid journal ID');
+        }
+
+        const journal = await this._journalRepository.deleteOneByJournalId(id);
+
+        if (!journal) {
+            throw new NotFoundException(ErrorMessagesEnum.FailedDbOp);
+        }
+
+        return {
+            status: 'success',
+            message: SuccessMessagesEnum.JournalDeleteSuccess,
+            data: journal.id.toString(),
         };
     }
 }

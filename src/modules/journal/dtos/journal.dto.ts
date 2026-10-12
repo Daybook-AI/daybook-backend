@@ -13,7 +13,7 @@ import {
     Min,
     ValidateNested,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class JournalDocumentDto {
     @IsString()
@@ -50,7 +50,7 @@ export class JournalNodeDto {
     marks?: Record<string, unknown>[];
 }
 
-export class CreateJournalDto {
+export class JournalPayloadDto {
     @IsString()
     @IsNotEmpty()
     title!: string;
