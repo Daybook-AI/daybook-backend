@@ -10,6 +10,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { Request } from 'express';
+import { EntryAnalysisModule } from 'src/modules/entry-analysis/entry-analysis.module';
 
 @Module({
   imports: [
@@ -61,6 +62,8 @@ import { Request } from 'express';
     AuthModule,
 
     JournalModule,
+
+    EntryAnalysisModule,
   ],
   controllers: [AppController],
   providers: [

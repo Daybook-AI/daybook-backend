@@ -1,5 +1,6 @@
 export enum ErrorMessagesEnum {
     PasswordErrorMessage = 'Password must be 6-25 characters and contain one uppercase letter, one lowercase letter, one number, and one of these special characters: @$!%*?&',
+    BadRequest = 'Your request is invalid.',
 
     EmailConflictErrorMessage = 'Email already exists.',
     EmailSentFailed = 'Failed to send email',
