@@ -1,5 +1,7 @@
 import { JsonValue } from "@prisma/client/runtime/client";
 
+export type JournalContentType = JsonValue;
+
 export interface IJournalDocument {
     type: 'doc';
     content: IJournalNode[];
@@ -36,7 +38,7 @@ export interface IUpdateJournalData {
 export interface IJournalClientResponse {
     id: number;
     title: string;
-    content: JsonValue;
+    content: JournalContentType;
     mood: string | null;
     tags: string[];
     createdAt: Date;

@@ -20,6 +20,8 @@ import { JOURNAL_REPOSITORY } from 'src/core/tokens/repository.token';
             provide: JOURNAL_REPOSITORY,
             useExisting: JournalRepository
         }
-    ]
+    ],
+    exports: [JOURNAL_REPOSITORY]
 })
 export class JournalModule { }
+    
