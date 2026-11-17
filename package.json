@@ -22,7 +22,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit",
-    
     "test:nvidia": "jest --rootDir . --runInBand --runTestsByPath test/nvidia-entry-analysis.spec.ts",
     "test:nvidia:parallel": "jest --rootDir . --runInBand --runTestsByPath test/nvidia-entry-analysis-parallel.spec.ts"
   },
@@ -44,6 +43,7 @@
     "class-validator": "^0.15.1",
     "cookie-parser": "^1.4.7",
     "ioredis": "^6.0.0",
+    "morgan": "^1.12.1",
     "nestjs-pino": "^5.3.1",
     "openai": "^7.32.0",
     "pg": "^8.23.1",

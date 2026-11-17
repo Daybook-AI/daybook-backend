@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { EntryAnalysis } from 'generated/prisma/client';
 import { IResponse } from 'src/core/common/interface';
 import { ErrorMessagesEnum } from 'src/core/enums/errors.enum';
