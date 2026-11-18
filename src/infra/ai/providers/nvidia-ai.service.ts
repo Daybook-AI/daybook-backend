@@ -61,6 +61,7 @@ export class NvidiaAIService implements IAITextGenerator {
                 outputTokens: response.usage?.completion_tokens,
             };
         } catch (error: unknown) {
+            console.log(error)
             if (error instanceof ServiceUnavailableException) {
                 throw error;
             }

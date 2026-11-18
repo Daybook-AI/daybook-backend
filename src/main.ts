@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+import { RequestLoggerInterceptor } from 'src/core/interceptors/request-logger.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +25,11 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.setGlobalPrefix('api');
+
+  app.use(morgan('dev'));
+  app.useGlobalInterceptors(
+    new RequestLoggerInterceptor()
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({

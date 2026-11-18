@@ -11,6 +11,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { Request } from 'express';
 import { EntryAnalysisModule } from 'src/modules/entry-analysis/entry-analysis.module';
+import { ChatModule } from 'src/modules/chat/chat.module';
+import { HealthController } from 'src/health/db-connect';
 
 @Module({
   imports: [
@@ -64,8 +66,10 @@ import { EntryAnalysisModule } from 'src/modules/entry-analysis/entry-analysis.m
     JournalModule,
 
     EntryAnalysisModule,
+
+    ChatModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [
     {
       provide: APP_GUARD,

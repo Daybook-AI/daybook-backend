@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "ChatRole" AS ENUM ('USER', 'ASSISTANT');
+
+-- AlterTable
+ALTER TABLE "ChatMessage" ALTER COLUMN "createdAt" SET DEFAULT CURRENT_TIMESTAMP;

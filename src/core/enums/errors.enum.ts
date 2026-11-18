@@ -1,13 +1,13 @@
 export enum ErrorMessagesEnum {
     PasswordErrorMessage = 'Password must be 6-25 characters and contain one uppercase letter, one lowercase letter, one number, and one of these special characters: @$!%*?&',
-    BadRequest = 'Your request is invalid.',
+    BadRequest = 'Your request is invalid',
 
     EmailConflictErrorMessage = 'Email already exists.',
     EmailSentFailed = 'Failed to send email',
-    OtpVerificationFailed = 'Invalid Opt.',
+    OtpVerificationFailed = 'Invalid Opt',
 
     LoginInvalidPayload = 'Invalid email or password',
-    SessionExpired = 'Your session has expired.',
+    SessionExpired = 'Your session has expired',
     Unauthenticated = 'User is not authenticated',
 
     AccessTokenMissing = 'Access token is missing',
@@ -19,5 +19,9 @@ export enum ErrorMessagesEnum {
     ExpiredRefreshtoken = 'Invalid or expired refresh token',
 
     JournalIdRequired = 'Journal ID is required',
-    FailedDbOp = 'Failed to get the requested item.',
+    FailedDbOp = 'Failed to do the requested task',
+
+    EmptySearchQuery = 'Search field is empty',
+
+    ConversationNotFound = 'Conversation not found',
 }
