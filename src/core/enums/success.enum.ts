@@ -13,4 +13,10 @@ export enum SuccessMessagesEnum {
     JournalFetchSuccess = 'Journal entries fetched successfully',
     JournalUpdateSuccess = 'Journal entry updated successfully',
     JournalDeleteSuccess = 'Journal entry deleted successfully',
+
+    ChatConversationsFetchSuccess = 'Chat conversations fetched successfully',
+    ChatConversationFetchSuccess = 'Chat conversation fetched successfully',
+    ChatConversationRenameSuccess = 'Chat conversation renamed successfully',
+    ChatConversationDeleteSuccess = 'Chat conversation deleted successfully',
+    ChatMessageSendSuccess = 'Chat message sent successfully',
 }

@@ -2,17 +2,18 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AI_TEXT_GENERATOR } from './tokens/ai.tokens';
-import { NvidiaAIService } from './providers/nvidia-ai.service';
+// import { NvidiaAIService } from './providers/nvidia-ai.service';
+import { OpenRouterAIService } from './providers/openrouter-ai.service';
 
 @Module({
     imports: [ConfigModule],
     providers: [
-        NvidiaAIService,
+        OpenRouterAIService,
         {
             provide: AI_TEXT_GENERATOR,
-            useExisting: NvidiaAIService,
+            useExisting: OpenRouterAIService,
         },
     ],
-    exports: [AI_TEXT_GENERATOR],
+    exports: [AI_TEXT_GENERATOR, OpenRouterAIService],
 })
 export class AIModule { }

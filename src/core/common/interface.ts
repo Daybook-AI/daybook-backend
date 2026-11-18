@@ -4,6 +4,12 @@ export interface IResponse<T = null> {
     data?: T
 }
 
+export interface IApiResponse<T = null> {
+    status: 'success' | 'error';
+    message: string;
+    data: T;
+}
+
 export interface IBaseEntity {
     id: number;
     createdAt?: Date;
